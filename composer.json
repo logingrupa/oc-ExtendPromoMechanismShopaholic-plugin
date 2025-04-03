@@ -1,5 +1,5 @@
 {
-  "name": "logingrupa/oc-extendpromomechanismshopaholic-plugin",
+  "name": "logingrupa/oc-extendpromomechanism-plugin",
   "description": "Extends Shopaholic promo mechanisms with target price functionality based on cart quantity",
   "type": "october-plugin",
   "license": "MIT",
