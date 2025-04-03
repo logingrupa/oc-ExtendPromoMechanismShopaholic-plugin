@@ -30,16 +30,16 @@ class QuantityChecker
     {
         // Get quantity limit value from mechanism properties
         $iQuantityLimit = (int) $obMechanism->getProperty('quantity_limit');
-        Log::info('QuantityChecker::checkQuantityLimit - Quantity limit: ' . $iQuantityLimit);
+        //Log::info('QuantityChecker::checkQuantityLimit - Quantity limit: ' . $iQuantityLimit);
         
         // If quantity limit is 0, apply to all units regardless of total quantity
         if ($iQuantityLimit === 0) {
-            Log::info('QuantityChecker::checkQuantityLimit - No quantity limit set, applying to all units');
+            //Log::info('QuantityChecker::checkQuantityLimit - No quantity limit set, applying to all units');
             return true;
         }
 
         if (empty($obPositionList) || (is_object($obPositionList) && method_exists($obPositionList, 'isEmpty') && $obPositionList->isEmpty())) {
-            Log::info('QuantityChecker::checkQuantityLimit - Position list is empty');
+            //Log::info('QuantityChecker::checkQuantityLimit - Position list is empty');
             return false;
         }
 
@@ -54,11 +54,11 @@ class QuantityChecker
             $iTotalQuantity += $obPositionItem->quantity;
         }
 
-        Log::info('QuantityChecker::checkQuantityLimit - Total quantity: ' . $iTotalQuantity . ', Limit: ' . $iQuantityLimit);
+        //Log::info('QuantityChecker::checkQuantityLimit - Total quantity: ' . $iTotalQuantity . ', Limit: ' . $iQuantityLimit);
         
         // Check if total quantity is greater than or equal to the limit
         $bResult = $iTotalQuantity >= $iQuantityLimit;
-        Log::info('QuantityChecker::checkQuantityLimit - Check result: ' . ($bResult ? 'true' : 'false'));
+        //Log::info('QuantityChecker::checkQuantityLimit - Check result: ' . ($bResult ? 'true' : 'false'));
         
         return $bResult;
     }

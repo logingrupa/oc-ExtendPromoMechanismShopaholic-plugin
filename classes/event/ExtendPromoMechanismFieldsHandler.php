@@ -25,7 +25,7 @@ class ExtendPromoMechanismFieldsHandler extends AbstractBackendFieldHandler
      */
     protected function extendFields($obWidget): void
     {
-        Log::info('ExtendPromoMechanismFieldsHandler::extendFields - Starting field extension');
+        //Log::info('ExtendPromoMechanismFieldsHandler::extendFields - Starting field extension');
         
         // Get the configuration for the quantity_limit field
         $arConfigQuantityLimit = optional($obWidget->getField('property[quantity_limit]'))->config;
@@ -40,7 +40,7 @@ class ExtendPromoMechanismFieldsHandler extends AbstractBackendFieldHandler
             Arr::set($arConfigQuantityLimit, 'label', 'Minimum total quantity to trigger discount');
             Arr::set($arConfigQuantityLimit, 'comment', 'The target price will ONLY be applied when the total quantity of items in the cart is greater than or equal to this value. For example, enter "20" to apply the target price when a customer has 20 or more items.');
             
-            Log::info('ExtendPromoMechanismFieldsHandler::extendFields - Extended quantity_limit trigger condition: ' . $sConditionExtended);
+            //Log::info('ExtendPromoMechanismFieldsHandler::extendFields - Extended quantity_limit trigger condition: ' . $sConditionExtended);
             
             // Update the field with modified configuration
             $obWidget->addFields([
@@ -63,7 +63,7 @@ class ExtendPromoMechanismFieldsHandler extends AbstractBackendFieldHandler
             ],
         ]);
         
-        Log::info('ExtendPromoMechanismFieldsHandler::extendFields - Added target_price_info field');
+        //Log::info('ExtendPromoMechanismFieldsHandler::extendFields - Added target_price_info field');
         
         // Modify the discount_value field
         $discountValueField = $obWidget->getField('discount_value');
@@ -83,7 +83,7 @@ class ExtendPromoMechanismFieldsHandler extends AbstractBackendFieldHandler
             
             Arr::set($discountValueConfig, 'commentAttributes', $commentAttributes);
             
-            Log::info('ExtendPromoMechanismFieldsHandler::extendFields - Modified discount_value field comment');
+            //Log::info('ExtendPromoMechanismFieldsHandler::extendFields - Modified discount_value field comment');
             
             // Apply changes to the field
             $obWidget->addFields([

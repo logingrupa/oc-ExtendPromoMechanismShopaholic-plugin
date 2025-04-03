@@ -30,25 +30,25 @@ abstract class AbstractSpecificPricePromoMechanism extends AbstractPromoMechanis
      */
     protected function applyFixedDiscount($fPrice)
     {
-        Log::info('AbstractSpecificPricePromoMechanism::applyFixedDiscount - Starting with price: ' . $fPrice . ', target price: ' . $this->fDiscountValue);
+        //Log::info('AbstractSpecificPricePromoMechanism::applyFixedDiscount - Starting with price: ' . $fPrice . ', target price: ' . $this->fDiscountValue);
         
         if ($this->bIncrease) {
             // Keep the original behavior for increases
             $fPrice = PriceHelper::round($fPrice + $this->fDiscountValue);
-            Log::info('AbstractSpecificPricePromoMechanism::applyFixedDiscount - Increase mode, new price: ' . $fPrice);
+            //Log::info('AbstractSpecificPricePromoMechanism::applyFixedDiscount - Increase mode, new price: ' . $fPrice);
         } else {
             // If the current price is higher than target price, set it to target price
             if ($fPrice > $this->fDiscountValue) {
                 $fPrice = PriceHelper::round($this->fDiscountValue);
-                Log::info('AbstractSpecificPricePromoMechanism::applyFixedDiscount - Applied target price: ' . $fPrice);
+                //Log::info('AbstractSpecificPricePromoMechanism::applyFixedDiscount - Applied target price: ' . $fPrice);
             } else {
-                Log::info('AbstractSpecificPricePromoMechanism::applyFixedDiscount - Current price is already lower than target, keeping: ' . $fPrice);
+                //Log::info('AbstractSpecificPricePromoMechanism::applyFixedDiscount - Current price is already lower than target, keeping: ' . $fPrice);
             }
             
             // Ensure price doesn't go below zero (safety check)
             if ($fPrice < 0) {
                 $fPrice = 0;
-                Log::info('AbstractSpecificPricePromoMechanism::applyFixedDiscount - Price was negative, set to 0');
+                //Log::info('AbstractSpecificPricePromoMechanism::applyFixedDiscount - Price was negative, set to 0');
             }
         }
 

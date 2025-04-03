@@ -40,22 +40,22 @@ class SpecificPriceByQuantityDiscountPosition extends AbstractPromoMechanism imp
      */
     protected function check($obProcessor, $obPosition = null): bool
     {
-        Log::info('SpecificPriceByQuantityDiscountPosition::check - Starting check');
+        //Log::info('SpecificPriceByQuantityDiscountPosition::check - Starting check');
 
         if (!parent::check($obProcessor, $obPosition)) {
-            Log::info('SpecificPriceByQuantityDiscountPosition::check - Parent check failed');
+            //Log::info('SpecificPriceByQuantityDiscountPosition::check - Parent check failed');
             return false;
         }
 
         if ($obPosition && !$this->checkPosition($obPosition)) {
-            Log::info('SpecificPriceByQuantityDiscountPosition::check - Position check failed');
+            //Log::info('SpecificPriceByQuantityDiscountPosition::check - Position check failed');
             return false;
         }
 
         // Use QuantityChecker to check if total quantity meets the limit
         $obPositionList = $obProcessor->getPositionList();
         if (empty($obPositionList) || (is_object($obPositionList) && method_exists($obPositionList, 'isEmpty') && $obPositionList->isEmpty())) {
-            Log::info('SpecificPriceByQuantityDiscountPosition::check - Position list is empty');
+            //Log::info('SpecificPriceByQuantityDiscountPosition::check - Position list is empty');
             return false;
         }
 
@@ -65,7 +65,7 @@ class SpecificPriceByQuantityDiscountPosition extends AbstractPromoMechanism imp
         };
 
         $bResult = QuantityChecker::instance()->checkQuantityLimit($this, $obPositionList, $fnCheckPosition);
-        Log::info('SpecificPriceByQuantityDiscountPosition::check - QuantityChecker result: ' . ($bResult ? 'true' : 'false'));
+        //Log::info('SpecificPriceByQuantityDiscountPosition::check - QuantityChecker result: ' . ($bResult ? 'true' : 'false'));
         
         return $bResult;
     }
@@ -79,31 +79,30 @@ class SpecificPriceByQuantityDiscountPosition extends AbstractPromoMechanism imp
      */
     public function calculateItemDiscount($obPriceContainer, $obProcessor, $obPosition)
     {
-        Log::info('SpecificPriceByQuantityDiscountPosition::calculateItemDiscount - Starting for position: ' . 
-            (isset($obPosition->id) ? $obPosition->id : 'unknown'));
+        //Log::info('SpecificPriceByQuantityDiscountPosition::calculateItemDiscount - Starting for position: ' . (isset($obPosition->id) ? $obPosition->id : 'unknown'));
         
         $this->bApplied = false;
         if (!$this->check($obProcessor, $obPosition)) {
-            Log::info('SpecificPriceByQuantityDiscountPosition::calculateItemDiscount - Check failed');
+            //Log::info('SpecificPriceByQuantityDiscountPosition::calculateItemDiscount - Check failed');
             return $obPriceContainer;
         }
 
-        Log::info('SpecificPriceByQuantityDiscountPosition::calculateItemDiscount - Check passed, applying target price');
+        //Log::info('SpecificPriceByQuantityDiscountPosition::calculateItemDiscount - Check passed, applying target price');
         
         $bPriceIncludeTax = TaxHelper::instance()->isPriceIncludeTax();
         $sFormulaCalculationDiscount = Settings::getValue('formula_calculate_discount_from_price', self::DISCOUNT_FROM_PRICE);
         $fTargetPrice = PriceHelper::toFloat($this->fDiscountValue);
         
-        Log::info('SpecificPriceByQuantityDiscountPosition::calculateItemDiscount - Target price: ' . $fTargetPrice);
+        //Log::info('SpecificPriceByQuantityDiscountPosition::calculateItemDiscount - Target price: ' . $fTargetPrice);
 
         // Get unit price list
         $arUnitPriceList = $obPriceContainer->getUnitPriceList();
-        Log::info('SpecificPriceByQuantityDiscountPosition::calculateItemDiscount - Unit price list count: ' . count($arUnitPriceList));
+        //Log::info('SpecificPriceByQuantityDiscountPosition::calculateItemDiscount - Unit price list count: ' . count($arUnitPriceList));
         
         $bAnyPriceChanged = false;
 
         foreach ($arUnitPriceList as $iKey => &$fPrice) {
-            Log::info('SpecificPriceByQuantityDiscountPosition::calculateItemDiscount - Unit ' . $iKey . ' original price: ' . $fPrice);
+            //Log::info('SpecificPriceByQuantityDiscountPosition::calculateItemDiscount - Unit ' . $iKey . ' original price: ' . $fPrice);
             
             // We'll only apply the target price if the current price is higher
             $fAdjustedPrice = $fPrice;
@@ -111,40 +110,40 @@ class SpecificPriceByQuantityDiscountPosition extends AbstractPromoMechanism imp
             // Prepare price, before applying discount
             if ($bPriceIncludeTax && $sFormulaCalculationDiscount == self::DISCOUNT_FROM_PRICE_WITHOUT_TAX) {
                 $fAdjustedPrice = TaxHelper::instance()->calculatePriceWithoutTax($fAdjustedPrice, $obPriceContainer->tax_percent);
-                Log::info('SpecificPriceByQuantityDiscountPosition::calculateItemDiscount - Converted to price without tax: ' . $fAdjustedPrice);
+                //Log::info('SpecificPriceByQuantityDiscountPosition::calculateItemDiscount - Converted to price without tax: ' . $fAdjustedPrice);
             } else if (!$bPriceIncludeTax && $sFormulaCalculationDiscount == self::DISCOUNT_FROM_PRICE_WITH_TAX) {
                 $fAdjustedPrice = TaxHelper::instance()->calculatePriceWithTax($fAdjustedPrice, $obPriceContainer->tax_percent);
-                Log::info('SpecificPriceByQuantityDiscountPosition::calculateItemDiscount - Converted to price with tax: ' . $fAdjustedPrice);
+                //Log::info('SpecificPriceByQuantityDiscountPosition::calculateItemDiscount - Converted to price with tax: ' . $fAdjustedPrice);
             }
             
             // Only apply the target price if current price is higher
             if ($fAdjustedPrice > $fTargetPrice) {
-                Log::info('SpecificPriceByQuantityDiscountPosition::calculateItemDiscount - Applying target price: ' . $fTargetPrice);
+                //Log::info('SpecificPriceByQuantityDiscountPosition::calculateItemDiscount - Applying target price: ' . $fTargetPrice);
                 $fAdjustedPrice = $fTargetPrice;
                 $bAnyPriceChanged = true;
             } else {
-                Log::info('SpecificPriceByQuantityDiscountPosition::calculateItemDiscount - Current price is already below target, keeping: ' . $fAdjustedPrice);
+                //Log::info('SpecificPriceByQuantityDiscountPosition::calculateItemDiscount - Current price is already below target, keeping: ' . $fAdjustedPrice);
             }
 
             // Calculate price after applying the discount
             if ($bPriceIncludeTax && $sFormulaCalculationDiscount == self::DISCOUNT_FROM_PRICE_WITHOUT_TAX) {
                 $fAdjustedPrice = TaxHelper::instance()->calculatePriceWithTax($fAdjustedPrice, $obPriceContainer->tax_percent);
-                Log::info('SpecificPriceByQuantityDiscountPosition::calculateItemDiscount - Converted back to price with tax: ' . $fAdjustedPrice);
+                //Log::info('SpecificPriceByQuantityDiscountPosition::calculateItemDiscount - Converted back to price with tax: ' . $fAdjustedPrice);
             } else if (!$bPriceIncludeTax && $sFormulaCalculationDiscount == self::DISCOUNT_FROM_PRICE_WITH_TAX) {
                 $fAdjustedPrice = TaxHelper::instance()->calculatePriceWithoutTax($fAdjustedPrice, $obPriceContainer->tax_percent);
-                Log::info('SpecificPriceByQuantityDiscountPosition::calculateItemDiscount - Converted back to price without tax: ' . $fAdjustedPrice);
+                //Log::info('SpecificPriceByQuantityDiscountPosition::calculateItemDiscount - Converted back to price without tax: ' . $fAdjustedPrice);
             }
             
             $fPrice = $fAdjustedPrice;
-            Log::info('SpecificPriceByQuantityDiscountPosition::calculateItemDiscount - Final price for unit ' . $iKey . ': ' . $fPrice);
+            //Log::info('SpecificPriceByQuantityDiscountPosition::calculateItemDiscount - Final price for unit ' . $iKey . ': ' . $fPrice);
         }
 
         $this->bApplied = $bAnyPriceChanged;
         if ($bAnyPriceChanged) {
-            Log::info('SpecificPriceByQuantityDiscountPosition::calculateItemDiscount - Discount was applied');
+            //Log::info('SpecificPriceByQuantityDiscountPosition::calculateItemDiscount - Discount was applied');
             $obPriceContainer->addDiscount($arUnitPriceList, $this);
         } else {
-            Log::info('SpecificPriceByQuantityDiscountPosition::calculateItemDiscount - No price changes were needed');
+            //Log::info('SpecificPriceByQuantityDiscountPosition::calculateItemDiscount - No price changes were needed');
         }
 
         return $obPriceContainer;

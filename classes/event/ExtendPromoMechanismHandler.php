@@ -24,10 +24,10 @@ class ExtendPromoMechanismHandler
      */
     public function subscribe(Dispatcher $obEvent): void
     {
-        Log::info('ExtendPromoMechanismHandler::subscribe - Registering promo mechanism');
+        //Log::info('ExtendPromoMechanismHandler::subscribe - Registering promo mechanism');
         
         $obEvent->listen(PromoMechanismStore::EVENT_ADD_PROMO_MECHANISM_CLASS, function () {
-            Log::info('ExtendPromoMechanismHandler - Adding SpecificPriceByQuantityDiscountPosition to promo mechanism list');
+            //Log::info('ExtendPromoMechanismHandler - Adding SpecificPriceByQuantityDiscountPosition to promo mechanism list');
             return [
                 SpecificPriceByQuantityDiscountPosition::class,
             ];

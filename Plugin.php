@@ -46,7 +46,7 @@ class Plugin extends PluginBase
      */
     public function register()
     {
-        Log::info('ExtendPromoMechanism::register - Plugin registered');
+        //Log::info('ExtendPromoMechanism::register - Plugin registered');
     }
 
     /**
@@ -55,12 +55,12 @@ class Plugin extends PluginBase
      */
     public function boot()
     {
-        Log::info('ExtendPromoMechanism::boot - Plugin booting');
+        //Log::info('ExtendPromoMechanism::boot - Plugin booting');
         
         // Register event handlers
         Event::subscribe(new ExtendPromoMechanismHandler());
         Event::subscribe(new ExtendPromoMechanismFieldsHandler());
         
-        Log::info('ExtendPromoMechanism::boot - Event handlers registered');
+        //Log::info('ExtendPromoMechanism::boot - Event handlers registered');
     }
 }
