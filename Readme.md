@@ -36,27 +36,27 @@ Unlike standard percentage or fixed-amount discounts, this mechanism provides a 
 
 1. **Via Composer**
    ```bash
-   composer require logingrupa/extendpromomechanismshopaholic
+   php artisan plugin:install Logingrupa.ExtendPromoMechanism --from=git@github.com:logingrupa/oc-ExtendPromoMechanismShopaholic-plugin.git --want=dev-master --oc`
    ```
 
 2. **Via OctoberCMS Marketplace**
-   - Search for "ExtendPromoMechanism" in the OctoberCMS backend
-   - Click Install
+   - Not yet available
 
 3. **Manual Installation**
    - Download the plugin
    - Extract to `/plugins/logingrupa/extendpromomechanism`
-   - Run `php artisan october:migrate`
+   - Run `php artisan plugin:refresh Logingrupa.ExtendPromoMechanism`
 
 ## Usage
 
-1. Go to **Shop → Promo Mechanisms** in your OctoberCMS backend
+1. Go to **Promotions → Promo Mechanisms** in your OctoberCMS backend
 2. Click **Create**
 3. Select the mechanism type **"Set exact price when total quantity ≥ limit"**
 4. Set the **Target price per item** (the exact price you want each qualifying item to cost)
 5. Set the **Minimum total quantity** to trigger the discount
 6. Configure other standard settings like active dates, product restrictions, etc.
 7. Save and test your new promotion
+8. Do not frget to **enable Promo Mechanism**  using **Camaigns**  or **Cupon groups** 
 
 ## How It Works
 
