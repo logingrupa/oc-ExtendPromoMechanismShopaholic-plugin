@@ -1,0 +1,15 @@
+{
+  "name": "logingrupa/oc-extendpromomechanismshopaholic-plugin",
+  "description": "Extends Shopaholic promo mechanisms with target price functionality based on cart quantity",
+  "type": "october-plugin",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Rolands Zeltins",
+      "email": "hi@logingrupa.lv"
+    }
+  ],
+  "require": {
+    "php": ">=7.2"
+  }
+}
