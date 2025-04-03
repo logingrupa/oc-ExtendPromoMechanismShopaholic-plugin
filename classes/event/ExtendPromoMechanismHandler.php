@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * File path: plugins/lovata/extendpromomechanism/classes/event/ExtendPromoMechanismHandler.php
+ * File path: plugins/logingrupa/extendpromomechanism/classes/event/ExtendPromoMechanismHandler.php
  */
 
 namespace Logingrupa\ExtendPromoMechanism\Classes\Event;
