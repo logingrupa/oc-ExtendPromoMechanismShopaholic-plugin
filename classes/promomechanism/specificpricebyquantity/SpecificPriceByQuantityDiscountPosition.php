@@ -10,6 +10,7 @@ use Lovata\OrdersShopaholic\Classes\PromoMechanism\AbstractPromoMechanism;
 use Lovata\OrdersShopaholic\Classes\PromoMechanism\InterfacePromoMechanism;
 use Lovata\OrdersShopaholic\Classes\PromoMechanism\ItemPriceContainer;
 use Logingrupa\ExtendPromoMechanism\Classes\PromoMechanism\QuantityChecker;
+use Lovata\Shopaholic\Classes\Helper\CurrencyHelper;
 use Lovata\Shopaholic\Classes\Helper\TaxHelper;
 use Lovata\Shopaholic\Models\Settings;
 use Lovata\Toolbox\Classes\Helper\PriceHelper;
@@ -75,8 +76,9 @@ class SpecificPriceByQuantityDiscountPosition extends AbstractPromoMechanism imp
         $bPriceIncludeTax = TaxHelper::instance()->isPriceIncludeTax();
         $sFormulaCalculationDiscount = Settings::getValue('formula_calculate_discount_from_price', self::DISCOUNT_FROM_PRICE);
         
-        // The discount_value represents our target price per item
-        $fTargetPrice = $this->fDiscountValue;
+        // The discount_value represents our target price per item (stored in default currency)
+        // Convert to active currency so it matches the unit prices in the price container
+        $fTargetPrice = CurrencyHelper::instance()->convert($this->fDiscountValue);
         
         // Get unit price list
         $arUnitPriceList = $obPriceContainer->getUnitPriceList();
