@@ -8,7 +8,6 @@ namespace Logingrupa\ExtendPromoMechanism\Classes\Event;
 
 use Logingrupa\ExtendPromoMechanism\Classes\PromoMechanism\SpecificPriceByQuantity\SpecificPriceByQuantityDiscountPosition;
 use Lovata\OrdersShopaholic\Classes\PromoMechanism\PromoMechanismStore;
-use October\Rain\Events\Dispatcher;
 use Log;
 
 /**
@@ -19,10 +18,10 @@ class ExtendPromoMechanismHandler
 {
     /**
      * Subscribe to events
-     * @param Dispatcher $obEvent
+     * @param mixed $obEvent
      * @return void
      */
-    public function subscribe(Dispatcher $obEvent): void
+    public function subscribe($obEvent): void
     {
         //Log::info('ExtendPromoMechanismHandler::subscribe - Registering promo mechanism');
         
