@@ -3,3 +3,6 @@
 1.0.0: 
     - 'Initialize plugin'
     - 'Add SpecificPriceByQuantityDiscountPosition mechanism'
+
+1.0.1:
+    - 'QuantityChecker::checkQuantityLimit() declares its callback parameter nullable, PHP 8.4 logged a deprecation on every promo check.'

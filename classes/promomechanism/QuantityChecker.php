@@ -26,7 +26,7 @@ class QuantityChecker
      * @param callable|null $fnCheckPosition Function to check if position is valid
      * @return bool
      */
-    public function checkQuantityLimit(InterfacePromoMechanism $obMechanism, $obPositionList, callable $fnCheckPosition = null): bool
+    public function checkQuantityLimit(InterfacePromoMechanism $obMechanism, $obPositionList, ?callable $fnCheckPosition = null): bool
     {
         // Get quantity limit value from mechanism properties
         $iQuantityLimit = (int) $obMechanism->getProperty('quantity_limit');
