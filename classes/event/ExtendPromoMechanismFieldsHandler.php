@@ -10,6 +10,7 @@ use Arr;
 use Lovata\OrdersShopaholic\Controllers\PromoMechanisms;
 use Lovata\OrdersShopaholic\Models\PromoMechanism;
 use Lovata\Toolbox\Classes\Event\AbstractBackendFieldHandler;
+use Logingrupa\ExtendPromoMechanism\Classes\PromoMechanism\BundlePrice\BundlePriceDiscountPosition;
 use Logingrupa\ExtendPromoMechanism\Classes\PromoMechanism\SpecificPriceByQuantity\SpecificPriceByQuantityDiscountPosition;
 use Log;
 
@@ -33,12 +34,13 @@ class ExtendPromoMechanismFieldsHandler extends AbstractBackendFieldHandler
         if (!empty($arConfigQuantityLimit)) {
             // Extend the trigger condition to include our mechanism
             $sCondition = trim((string) Arr::get($arConfigQuantityLimit, 'trigger.condition'));
-            $sConditionExtended = $sCondition . ' || value[' . SpecificPriceByQuantityDiscountPosition::class . ']';
+            $sConditionExtended = $sCondition
+                . ' || value[' . SpecificPriceByQuantityDiscountPosition::class . ']'
+                . ' || value[' . BundlePriceDiscountPosition::class . ']';
             Arr::set($arConfigQuantityLimit, 'trigger.condition', $sConditionExtended);
-            
-            // Update the label and comment to make it clear this is for the minimum quantity threshold
-            Arr::set($arConfigQuantityLimit, 'label', 'Minimum total quantity to trigger discount');
-            Arr::set($arConfigQuantityLimit, 'comment', 'The target price will ONLY be applied when the total quantity of items in the cart is greater than or equal to this value. For example, enter "20" to apply the target price when a customer has 20 or more items.');
+
+            Arr::set($arConfigQuantityLimit, 'label', 'Quantity (minimum total quantity, or units in one bundle)');
+            Arr::set($arConfigQuantityLimit, 'comment', 'Set exact price: the target price applies only when the cart holds at least this many qualifying items in total, for example "20". Bundle price: the number of units in one bundle, for example "2" for "2 pcs for 35 EUR".');
             
             //Log::info('ExtendPromoMechanismFieldsHandler::extendFields - Extended quantity_limit trigger condition: ' . $sConditionExtended);
             
@@ -61,6 +63,17 @@ class ExtendPromoMechanismFieldsHandler extends AbstractBackendFieldHandler
                     'condition' => 'value[' . SpecificPriceByQuantityDiscountPosition::class . ']',
                 ],
             ],
+            'property[bundle_price_info]' => [
+                'label' => 'Important Note',
+                'type' => 'partial',
+                'path' => '$/logingrupa/extendpromomechanism/partials/_bundle_price_info.htm',
+                'span' => 'full',
+                'trigger' => [
+                    'action' => 'show',
+                    'field' => 'type',
+                    'condition' => 'value[' . BundlePriceDiscountPosition::class . ']',
+                ],
+            ],
         ]);
         
         //Log::info('ExtendPromoMechanismFieldsHandler::extendFields - Added target_price_info field');
@@ -72,10 +85,10 @@ class ExtendPromoMechanismFieldsHandler extends AbstractBackendFieldHandler
             
             // Update label and comment to make it clear this is the target price
             if (isset($discountValueConfig['label'])) {
-                $discountValueConfig['label'] = 'Target price per item';
+                $discountValueConfig['label'] = 'Target price (per item, or for the whole bundle)';
             }
-            
-            $discountValueConfig['comment'] = 'Enter the exact price you want each qualifying item to cost';
+
+            $discountValueConfig['comment'] = 'Set exact price: the price of each qualifying item. Bundle price: the price of the whole bundle, for example "35.00".';
             
             // Update commentAttributes property to change comment based on selected type
             $commentAttributes = Arr::get($discountValueConfig, 'commentAttributes', []);

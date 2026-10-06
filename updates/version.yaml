@@ -6,3 +6,5 @@
 
 1.0.1:
     - 'QuantityChecker::checkQuantityLimit() declares its callback parameter nullable, PHP 8.4 logged a deprecation on every promo check.'
+1.0.2:
+    - 'New mechanism type Bundle price: every full bundle of N units costs a fixed total, units from different lines count together, a leftover unit keeps its price and the total splits to the cent.'

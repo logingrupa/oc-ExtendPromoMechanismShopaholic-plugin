@@ -6,6 +6,7 @@
 
 namespace Logingrupa\ExtendPromoMechanism\Classes\Event;
 
+use Logingrupa\ExtendPromoMechanism\Classes\PromoMechanism\BundlePrice\BundlePriceDiscountPosition;
 use Logingrupa\ExtendPromoMechanism\Classes\PromoMechanism\SpecificPriceByQuantity\SpecificPriceByQuantityDiscountPosition;
 use Lovata\OrdersShopaholic\Classes\PromoMechanism\PromoMechanismStore;
 use Log;
@@ -29,6 +30,7 @@ class ExtendPromoMechanismHandler
             //Log::info('ExtendPromoMechanismHandler - Adding SpecificPriceByQuantityDiscountPosition to promo mechanism list');
             return [
                 SpecificPriceByQuantityDiscountPosition::class,
+                BundlePriceDiscountPosition::class,
             ];
         });
     }
